@@ -1,7 +1,7 @@
+import 'package:attendance/src/screens/recordDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance/src/Dataset/attendance.dart';
 import 'package:intl/intl.dart';
-import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -61,8 +61,13 @@ class _MainpageState extends State<Mainpage> {
     });
   }
 
-  void _shareContactInformation(String name, String phone) {
-    Share.share('Name: $name\nPhone: $phone');
+  void _navigateToRecordDetail(Data record) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RecordDetailScreen(record: record),
+      ),
+    );
   }
 
   void _showSuccessIndicator(BuildContext context) {
@@ -128,20 +133,26 @@ class _MainpageState extends State<Mainpage> {
             final DateTime now = DateTime.now();
             final difference = now.difference(data.secondcheckIn);
 
-            return Card(
-              child: ListTile(
-                title: Text(data.user),
-                subtitle: Text(data.phone),
-                trailing: Text(
-                  _useTimeAgo
-                      ? timeago.format(now.subtract(difference))
-                      : DateFormat('dd MMM yyyy, h:mm a')
-                      .format(data.secondcheckIn),
+            return GestureDetector(
+              onTap: () {
+                _navigateToRecordDetail(data);
+              },
+              child: Card(
+                child: ListTile(
+                  title: Text(data.user),
+                  subtitle: Text(data.phone),
+                  trailing: Text(
+                    _useTimeAgo
+                        ? timeago.format(now.subtract(difference))
+                        : DateFormat('dd MMM yyyy, h:mm a')
+                        .format(data.secondcheckIn),
+                  ),
                 ),
               ),
             );
           },
-        ),
+        )
+
       ),
     );
   }

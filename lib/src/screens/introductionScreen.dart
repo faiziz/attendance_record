@@ -6,18 +6,17 @@ class OnboardingScreen extends StatelessWidget {
   final pages = [
     PageViewModel(
       pageColor: Colors.blue,
-      bubble: Image.asset('assets/images/bubble.png'),
       body: Text(
-        'Welcome to the Attendance App!',
+        'Here we can see our colleague',
         style: TextStyle(fontSize: 16.0),
       ),
-      title: Text('Introduction Page 1'),
+      title: Text('Welcome to attendance application'),
       titleTextStyle: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
       bodyTextStyle: TextStyle(fontSize: 16.0, color: Colors.white),
       mainImage: Image.asset(
-        'assets/images/intro_image_1.png',
-        height: 285.0,
-        width: 285.0,
+        'assets/working.png',
+        height: 1000.0,
+        width: 600.0,
         alignment: Alignment.center,
       ),
     ),

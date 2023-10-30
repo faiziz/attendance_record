@@ -1,34 +1,38 @@
-import 'dart:convert';
-
 import 'package:attendance/src/screens/introductionScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance/src/screens/mainpage.dart';
-import 'package:attendance/src/Dataset/attendance.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  var jsonRecord = '''
-  ''';
+  bool onboardingCompleted = prefs.getBool('onboardingCompleted') ?? false;
 
-  Map<String, dynamic> recordMap = jsonDecode(jsonRecord);
+  if (!onboardingCompleted) {
+    runApp(OnboardingApp());
+    await prefs.setBool('onboardingCompleted', true);
+  } else {
+    runApp(MyApp());
+  }
+}
 
-  var attendanceRecord = Data(
-    user: recordMap['user'],
-    phone: recordMap['phone'],
-    checkIn: recordMap['check-in'],
-    secondcheckIn: DateTime(2020, 6, 30, 16, 10, 5), // Adding secondcheckIn
-  );
-
-  dataList.add(attendanceRecord);
-  dataList.sort((a, b) => b.secondcheckIn.compareTo(a.secondcheckIn));
+class OnboardingApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: OnboardingScreen(),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: OnboardingScreen(),
+      debugShowCheckedModeBanner: false,
+      home: Mainpage(),
     );
   }
 }
